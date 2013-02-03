@@ -1,5 +1,5 @@
 from django.test import TestCase
-from geosimple.utils import Point, convert_to_point
+from geosimple.utils import Point, Geohash, convert_to_point
 from geosimple.tests.models import CoffeeShop
 
 # Example lat/lon pair and corresponding geohash
@@ -80,9 +80,19 @@ class GeohashFieldTestCase(TestCase):
         shop = self.get_shop()
         self.assertEqual(shop.location, GEOHASH)
 
-    def test_type_conversion(self):
+    def test_type_conversion_to_database(self):
         self.shop.location = (LAT, LON)
         self.shop.save()
 
         shop = self.get_shop()
+        self.assertIsInstance(shop.location, Geohash)
         self.assertEqual(shop.location, GEOHASH)
+
+    def test_type_conversion_from_database(self):
+        self.shop.location = (LAT, LON)
+        self.shop.save()
+
+        shop = self.get_shop()
+        geohash = shop.location
+        self.assertAlmostEqual(geohash.point.latitude, LAT, places=5)
+        self.assertAlmostEqual(geohash.point.longitude, LON, places=5)
