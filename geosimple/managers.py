@@ -93,6 +93,7 @@ class GeoQuerySet(models.query.QuerySet):
         else:
             return super(GeoQuerySet, self).__getitem__(k)
 
+
 class GeoManager(models.Manager):
 
     def get_query_set(self):
