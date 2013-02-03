@@ -7,4 +7,5 @@ DATABASES = {
 
 INSTALLED_APPS = (
     'geosimple',
+    'geosimple.tests',
 )
