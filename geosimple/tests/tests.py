@@ -2,16 +2,18 @@ from django.test import TestCase
 from geosimple.utils import Point, convert_to_point
 from geosimple.tests.models import CoffeeShop
 
+# Example lat/lon pair and corresponding geohash
+LAT = 50.822482
+LON = -0.141449
+GEOHASH = 'gcpchgbyrvrf'
+
 
 class PointConversionTestCase(TestCase):
 
-    LAT = 50.822482
-    LON = -0.141449
-
     def test_tuple(self):
-        point = convert_to_point((self.LAT, self.LON))
-        self.assertEqual(point.latitude, self.LAT)
-        self.assertEqual(point.longitude, self.LON)
+        point = convert_to_point((LAT, LON))
+        self.assertEqual(point.latitude, LAT)
+        self.assertEqual(point.longitude, LON)
 
     def test_object_with_verbose_properties(self):
 
@@ -19,11 +21,11 @@ class PointConversionTestCase(TestCase):
             pass
 
         location = Dummy()
-        location.latitude = self.LAT
-        location.longitude = self.LON
+        location.latitude = LAT
+        location.longitude = LON
         point = convert_to_point(location)
-        self.assertEqual(point.latitude, self.LAT)
-        self.assertEqual(point.longitude, self.LON)
+        self.assertEqual(point.latitude, LAT)
+        self.assertEqual(point.longitude, LON)
 
     def test_object_with_short_properties(self):
 
@@ -31,47 +33,56 @@ class PointConversionTestCase(TestCase):
             pass
 
         location = Dummy()
-        location.lat = self.LAT
-        location.lon = self.LON
+        location.lat = LAT
+        location.lon = LON
         point = convert_to_point(location)
-        self.assertEqual(point.latitude, self.LAT)
-        self.assertEqual(point.longitude, self.LON)
+        self.assertEqual(point.latitude, LAT)
+        self.assertEqual(point.longitude, LON)
 
     def test_dict_with_verbose_keys(self):
-        location = {'latitude': self.LAT, 'longitude': self.LON}
+        location = {'latitude': LAT, 'longitude': LON}
         point = convert_to_point(location)
-        self.assertEqual(point.latitude, self.LAT)
-        self.assertEqual(point.longitude, self.LON)
+        self.assertEqual(point.latitude, LAT)
+        self.assertEqual(point.longitude, LON)
 
     def test_dict_with_short_keys(self):
-        location = {'lat': self.LAT, 'lon': self.LON}
+        location = {'lat': LAT, 'lon': LON}
         point = convert_to_point(location)
-        self.assertEqual(point.latitude, self.LAT)
-        self.assertEqual(point.longitude, self.LON)
+        self.assertEqual(point.latitude, LAT)
+        self.assertEqual(point.longitude, LON)
 
 
 class PointGeohashTestCase(TestCase):
 
-    LAT = 50.822482
-    LON = -0.141449
-
     def test_convert_point_to_geohash(self):
-        point = Point(self.LAT, self.LON)
-        self.assertEqual(point.geohash, 'gcpchgbyrvrf')
+        point = Point(LAT, LON)
+        self.assertEqual(point.geohash, GEOHASH)
 
     def test_convert_geohash_to_point(self):
-        point = Point(self.LAT, self.LON)
+        point = Point(LAT, LON)
         geohash = point.geohash
-        self.assertAlmostEqual(geohash.point.latitude, self.LAT, places=5)
-        self.assertAlmostEqual(geohash.point.longitude, self.LON, places=5)
+        self.assertAlmostEqual(geohash.point.latitude, LAT, places=5)
+        self.assertAlmostEqual(geohash.point.longitude, LON, places=5)
 
 
 class GeohashFieldTestCase(TestCase):
 
-    def test_basic_string_behaviour(self):
-        shop = CoffeeShop(name='The Marwood')
-        shop.location = 'gcpchgbyrvrf'
-        shop.save()
+    def setUp(self):
+        self.shop = CoffeeShop(name='The Marwood')
 
-        shop = CoffeeShop.objects.get()
-        self.assertEqual(shop.location, 'gcpchgbyrvrf')
+    def get_shop(self):
+        return CoffeeShop.objects.get()
+
+    def test_basic_string_behaviour(self):
+        self.shop.location = GEOHASH
+        self.shop.save()
+
+        shop = self.get_shop()
+        self.assertEqual(shop.location, GEOHASH)
+
+    def test_type_conversion(self):
+        self.shop.location = (LAT, LON)
+        self.shop.save()
+
+        shop = self.get_shop()
+        self.assertEqual(shop.location, GEOHASH)
