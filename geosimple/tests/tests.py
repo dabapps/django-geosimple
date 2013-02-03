@@ -1,5 +1,6 @@
 from django.test import TestCase
 from geosimple.utils import Point, convert_to_point
+from geosimple.tests.models import CoffeeShop
 
 
 class PointConversionTestCase(TestCase):
@@ -63,3 +64,14 @@ class PointGeohashTestCase(TestCase):
         geohash = point.geohash
         self.assertAlmostEqual(geohash.point.latitude, self.LAT, places=5)
         self.assertAlmostEqual(geohash.point.longitude, self.LON, places=5)
+
+
+class GeohashFieldTestCase(TestCase):
+
+    def test_basic_string_behaviour(self):
+        shop = CoffeeShop(name='The Marwood')
+        shop.location = 'gcpchgbyrvrf'
+        shop.save()
+
+        shop = CoffeeShop.objects.get()
+        self.assertEqual(shop.location, 'gcpchgbyrvrf')
