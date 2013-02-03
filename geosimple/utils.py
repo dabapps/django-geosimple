@@ -1,4 +1,6 @@
 import geohash
+from geopy.point import Point as GeopyPoint
+from geopy.distance import distance
 
 
 # Mapping geohash length (in characters) to +/- error size (in kilometres)
@@ -23,6 +25,12 @@ class Point(object):
     @property
     def geohash(self):
         return Geohash(geohash.encode(self.latitude, self.longitude))
+
+    def as_geopy_point(self):
+        return GeopyPoint(latitude=self.latitude, longitude=self.longitude)
+
+    def distance_from(self, other):
+        return distance(self.as_geopy_point(), other.as_geopy_point())
 
 
 class Geohash(str):
@@ -75,6 +83,8 @@ def convert_to_point(arg):
         return Point(lat, lon)
     except TypeError:
         pass
+
+    return arg
 
 
 def geohash_length_for_error(radius):

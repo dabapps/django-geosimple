@@ -106,12 +106,21 @@ class GeohashFieldTestCase(TestCase):
 
 class GeoManagerTestCase(TestCase):
 
+    def setUp(self):
+        self.marwood = CoffeeShop.objects.create(name='The Marwood', location=(LAT, LON))
+        self.flat_white = CoffeeShop.objects.create(name='Flat White', location='gcpvhcvbev6sq')
+        self.dabapps_office = (50.8229, -0.143219)
+
     def test_geohash_expansion(self):
-        marwood = CoffeeShop.objects.create(name='The Marwood', location=(LAT, LON))
-        flat_white = CoffeeShop.objects.create(name='Flat White', location='gcpvhcvbev6sq')
-
-        dabapps_office = (50.8229, -0.143219)
-
-        results = CoffeeShop.objects.filter(location__approx_distance_lt=(dabapps_office, 0.5))
+        results = CoffeeShop.objects.filter(location__approx_distance_lt=(self.dabapps_office, 0.5))
         self.assertEqual(results.count(), 1)
-        self.assertEqual(results[0], marwood)
+        self.assertEqual(results[0], self.marwood)
+
+    def test_in_memory_filtering(self):
+        CoffeeShop.objects.create(name='Redwood', location='gcpchuuwvg7xx')
+
+        results = CoffeeShop.objects.filter(location__approx_distance_lt=(self.dabapps_office, 0.5))
+        self.assertEqual(results.count(), 2)  # despite the fact that Redwood is more than 0.5km away
+
+        results = CoffeeShop.objects.filter(location__distance_lt=(self.dabapps_office, 0.5))
+        self.assertEqual(results.count(), 1)
