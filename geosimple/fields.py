@@ -8,6 +8,7 @@ class GeohashField(models.CharField):
 
     def __init__(self, *args, **kwargs):
         kwargs['max_length'] = 12
+        kwargs['db_index'] = True
         return super(GeohashField, self).__init__(*args, **kwargs)
 
     def to_python(self, value):
