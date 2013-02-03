@@ -1,5 +1,5 @@
 from django.test import TestCase
-from geosimple.utils import Point, Geohash, convert_to_point
+from geosimple.utils import Point, Geohash, convert_to_point, geohash_length_for_error
 from geosimple.tests.models import CoffeeShop
 
 # Example lat/lon pair and corresponding geohash
@@ -65,6 +65,12 @@ class PointGeohashTestCase(TestCase):
         self.assertAlmostEqual(geohash.point.longitude, LON, places=5)
 
 
+class GeohashErrorSizeTestCase(TestCase):
+
+    def test_error_size_calculation(self):
+        self.assertEqual(geohash_length_for_error(2.0), 5)
+
+
 class GeohashFieldTestCase(TestCase):
 
     def setUp(self):
@@ -96,3 +102,16 @@ class GeohashFieldTestCase(TestCase):
         geohash = shop.location
         self.assertAlmostEqual(geohash.point.latitude, LAT, places=5)
         self.assertAlmostEqual(geohash.point.longitude, LON, places=5)
+
+
+class GeoManagerTestCase(TestCase):
+
+    def test_geohash_expansion(self):
+        marwood = CoffeeShop.objects.create(name='The Marwood', location=(LAT, LON))
+        flat_white = CoffeeShop.objects.create(name='Flat White', location='gcpvhcvbev6sq')
+
+        dabapps_office = (50.8229, -0.143219)
+
+        results = CoffeeShop.objects.filter(location__approx_distance_lt=(dabapps_office, 0.5))
+        self.assertEqual(results.count(), 1)
+        self.assertEqual(results[0], marwood)
