@@ -124,3 +124,4 @@ class GeoManagerTestCase(TestCase):
 
         results = CoffeeShop.objects.filter(location__distance_lt=(self.dabapps_office, 0.5))
         self.assertEqual(results.count(), 1)
+        self.assertEqual(results[0], self.marwood)

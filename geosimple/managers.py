@@ -73,11 +73,11 @@ class GeoQuerySet(models.query.QuerySet):
             if distance_from_location < radius:
                 results.append(result)
 
-        return results
+        return iter(results)
 
     def count(self):
         if self._postprocess:
-            return len(self.iterator())
+            return len(list(self.iterator()))
         else:
             return super(GeoQuerySet, self).count()
 
