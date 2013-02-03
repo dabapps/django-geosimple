@@ -39,10 +39,6 @@ A `GeohashField` provides a simple way to store a location as a Geohash. Interal
     # or
     marwood.location = geopy.Point(50.822482, -0.141449)
 
-    # or
-    marwood.location.latitude = 50.822482
-    marwood.location.longitude = -0.141449
-
     marwood.save()
 
 You can retrieve the location in corresponding formats, too:

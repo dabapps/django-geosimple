@@ -103,6 +103,16 @@ class GeohashFieldTestCase(TestCase):
         self.assertAlmostEqual(geohash.point.latitude, LAT, places=5)
         self.assertAlmostEqual(geohash.point.longitude, LON, places=5)
 
+        # Various different access methods
+        self.assertAlmostEqual(geohash.latitude, LAT, places=5)
+        self.assertAlmostEqual(geohash.longitude, LON, places=5)
+
+        self.assertAlmostEqual(geohash.as_dict()['latitude'], LAT, places=5)
+        self.assertAlmostEqual(geohash.as_dict()['longitude'], LON, places=5)
+
+        self.assertAlmostEqual(geohash.as_tuple()[0], LAT, places=5)
+        self.assertAlmostEqual(geohash.as_tuple()[1], LON, places=5)
+
 
 class GeoManagerTestCase(TestCase):
 

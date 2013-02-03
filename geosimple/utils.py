@@ -32,6 +32,12 @@ class Point(object):
     def distance_from(self, other):
         return distance(self.as_geopy_point(), other.as_geopy_point())
 
+    def as_dict(self):
+        return {'latitude': self.latitude, 'longitude': self.longitude}
+
+    def as_tuple(self):
+        return self.latitude, self.longitude
+
 
 class Geohash(str):
 
@@ -48,6 +54,20 @@ class Geohash(str):
 
     def trim(self, length):
         return Geohash(self[0:length])
+
+    @property
+    def latitude(self):
+        return self.point.latitude
+
+    @property
+    def longitude(self):
+        return self.point.longitude
+
+    def as_dict(self):
+        return self.point.as_dict()
+
+    def as_tuple(self):
+        return self.point.as_tuple()
 
 
 def convert_to_point(arg):
