@@ -125,3 +125,13 @@ class GeoManagerTestCase(TestCase):
         results = CoffeeShop.objects.filter(location__distance_lt=(self.dabapps_office, 0.5))
         self.assertEqual(results.count(), 1)
         self.assertEqual(results[0], self.marwood)
+
+    def test_in_memory_sort(self):
+        redwood = CoffeeShop.objects.create(name='Redwood', location='gcpchuuwvg7xx')
+
+        results = CoffeeShop.objects.filter(location__distance_lt=(self.dabapps_office, 100)).order_by_distance()
+        self.assertEqual(results.count(), 3)
+        #results = list(results)
+        self.assertEqual(results[0], self.marwood)
+        self.assertEqual(results[1], redwood)
+        self.assertEqual(results[2], self.flat_white)

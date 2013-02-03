@@ -34,11 +34,9 @@ class GeoQuerySet(models.query.QuerySet):
             filters = self._create_approx_distance_filter(field_name, location, radius)
 
             if is_exact:
-                self._postprocess = {
-                    'field_name': field_name,
-                    'location': location,
-                    'radius': radius,
-                }
+                self._postprocess['field_name'] = field_name
+                self._postprocess['location'] = location
+                self._postprocess['radius'] = radius
 
         result = super(GeoQuerySet, self).filter(*args, **kwargs)
 
@@ -55,6 +53,10 @@ class GeoQuerySet(models.query.QuerySet):
             filters.add(models.Q(**{"%s__startswith" % field_name: item}), models.Q.OR)
         return filters
 
+    def order_by_distance(self):
+        self._postprocess['sort'] = True
+        return self._clone()
+
     def iterator(self):
         result_iter = super(GeoQuerySet, self).iterator()
 
@@ -65,14 +67,18 @@ class GeoQuerySet(models.query.QuerySet):
         location = self._postprocess['location']
         radius = self._postprocess['radius']
 
+        distance_property_name = "%s_distance" % field_name
+
         results = []
-        for result in result_iter:
-            result_location = getattr(result, self._postprocess['field_name'])
+        for result in list(result_iter):
+            result_location = getattr(result, field_name)
             distance_from_location = result_location.point.distance_from(convert_to_point(location))
-            setattr(result, '%s_distance' % field_name, distance_from_location)
+            setattr(result, distance_property_name, distance_from_location)
             if distance_from_location < radius:
                 results.append(result)
 
+        if self._postprocess.get('sort'):
+            return iter(sorted(results, key=lambda item: getattr(item, distance_property_name)))
         return iter(results)
 
     def count(self):
@@ -80,6 +86,12 @@ class GeoQuerySet(models.query.QuerySet):
             return len(list(self.iterator()))
         else:
             return super(GeoQuerySet, self).count()
+
+    def __getitem__(self, k):
+        if self._postprocess:
+            return list(self.iterator()).__getitem__(k)
+        else:
+            return super(GeoQuerySet, self).__getitem__(k)
 
 class GeoManager(models.Manager):
 
