@@ -8,3 +8,6 @@ class CoffeeShop(models.Model):
     location = GeohashField()
 
     objects = GeoManager()
+
+    def __unicode__(self):
+        return self.name
