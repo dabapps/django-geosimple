@@ -13,6 +13,21 @@ django-geosimple provides the following:
 
 It works on any database backend supported by Django with no modifications. It is based on the `geopy` and `python-geohash` libraries.
 
+Background
+----------
+
+Conceptually, the sorts of geospatial calculations that *most* web applications need to perform are relatively straightforward:
+
+*Find all points within a given distance from a starting point, and/or sort the points by distance.*
+
+The `geopy` library provides an easy, fast method for calculating the distance between two points. If we calculate this distance for every point in our database, we can easily sort them and discard any that fall outside a given radius.
+
+Although computers are fast (my laptop can calculate and sort the above distances for 20,000 points in less than a second), this approach clearly doesn't scale very well. It uses lots of memory, and with a large-ish number of points the calculations take too much time to be performed in a web request/response cycle.
+
+[Geohash](https://en.wikipedia.org/wiki/Geohash) is a fairly well-established way of representing geographical locations as human-readable strings that have a desirable property: they get *gradually less accurate* as you discard characters from the end of the code. It's also easy to calculate the neighbours of a given geohash.
+
+By storing our geographical points as geohashes, we can "jump start" the sorting/filtering algorithm by crudely filtering the points to those which lie *approximately* in the area we're interested in. This makes a brute-force in-memory sorting algorithm much more usable, especially with relatively small numbers of locations.
+
 GeohashField
 ------------
 
