@@ -31,7 +31,7 @@ By storing our geographical points as geohashes, we can "jump start" the sorting
 GeohashField
 ------------
 
-A `GeohashField` provides a simple way to store a location as a Geohash. Interally, the location is stored as a 12-character `CharField`. The value of the field can be set in a few ways:
+A `GeohashField` provides a simple way to store a location as a Geohash. Internally, the location is stored as a 12-character `CharField`. The value of the field can be set in a few ways:
 
 * Directly as a string, if you already know the geohash
 * As a (latitude, longitude) two-tuple
