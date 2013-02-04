@@ -85,7 +85,7 @@ You can perform a fairly crude filter of your locations by searching nearby geoh
 ```pycon
 >>> dabapps_office = (50.8229, -0.143219)
 >>> distance = 0.5  # kilometres
->>> Coffeeshop.objects.filter(location__approx_distance_lt=(dabapps_office, distance))
+>>> CoffeeShop.objects.filter(location__approx_distance_lt=(dabapps_office, distance))
 ```
 
 The value is a two-tuple of a location and a distance. The location can be specified in any of the ways supported by field assignment above (two-tuple, dictionary, object, etc). The distance can either be a number in kilometers, or a `geopy.distance.Distance` instance (aliased to `geosimple.Distance` for convenience), which can be used to represent all manner of other distance measurements.
@@ -97,7 +97,7 @@ This works by creating a set of nine geohashes that cover the area described by 
 After a crude filter has been performed, `django-geosimple` can post-process your query results to discard any that don't fit with in the radius you requested. This is done *in-memory*, so is only sensible to use with relatively small sets of results. The crude geohash search described above is performed to chop down your result set to a sensible size first.
 
 ```pycon
->>> Coffeeshop.objects.filter(location__distance_lt=(dabapps_office, distance))
+>>> CoffeeShop.objects.filter(location__distance_lt=(dabapps_office, distance))
 ```
 
 You don't need to use both `__approx_distance_lt` and `__distance_lt`: using the latter implies the former.
@@ -107,13 +107,13 @@ You don't need to use both `__approx_distance_lt` and `__distance_lt`: using the
 You can order a set of results by distance from a point. Again, this is done *in-memory* when the queryset is iterated, so don't try to use it for large result sets.
 
 ```pycon
->>> Coffeeshop.objects.order_by_distance_from(dabapps_office)
+>>> CoffeeShop.objects.order_by_distance_from(dabapps_office)
 ```
 
 If you've already filtered the points by distance, you don't need to supply the location again:
 
 ```
->>> Coffeeshop.objects.filter(location__distance_lt=(dabapps_office, Distance(miles=1))).order_by_distance()
+>>> CoffeeShop.objects.filter(location__distance_lt=(dabapps_office, Distance(miles=1))).order_by_distance()
 ```
 
 ### Distance annotation
