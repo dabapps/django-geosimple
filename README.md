@@ -22,7 +22,7 @@ Conceptually, the sorts of geospatial calculations that *most* web applications 
 
 The `geopy` library provides an easy, fast method for calculating the distance between two points. If we calculate this distance for every point in our database, we can easily sort them and discard any that fall outside a given radius.
 
-Although computers are fast (my laptop can calculate and sort the above distances for 20,000 points in less than a second), this approach clearly doesn't scale very well. It uses lots of memory, and with a large-ish number of points the calculations take too much time to be performed in a web request/response cycle.
+Although computers are fast (my laptop can calculate and sort distances for 20,000 points in less than a second), this approach clearly doesn't scale very well. It uses lots of memory, and with a large-ish number of points the calculations take too much time to be performed in a web request/response cycle.
 
 [Geohash](https://en.wikipedia.org/wiki/Geohash) is a fairly well-established way of representing geographical locations as human-readable strings that have a desirable property: they get *gradually less accurate* as you discard characters from the end of the code. It's also easy to calculate the neighbours of a given geohash.
 
