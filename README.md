@@ -37,7 +37,6 @@ A `GeohashField` provides a simple way to store a location as a Geohash. Interal
 * As a (latitude, longitude) two-tuple
 * From a dictionary with `latitude` and `longitude` (or `lat` and `lon`) keys
 * From an object with `latitude` and `longitude` (or `lat` and `lon` properties)
-* By setting the `latitude` and `longitude` (or `lat` and `lon`) properties on the field itself.
 
 ```python
 class CoffeeShop(models.Model):
