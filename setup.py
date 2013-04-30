@@ -7,14 +7,14 @@ import os
 import sys
 
 
-name = 'django-reusable-app'
-package = 'myproject'
-description = ''
-url = 'http://github.com/.../.../'
-author = ''
-author_email = ''
+name = 'django-geosimple'
+package = 'geosimple'
+description = 'Simple Geohashing helpers'
+url = 'http://github.com/dabapps/django-geosimple/'
+author = 'Jamie Matthews'
+author_email = 'jamie@dabapps.com'
 license = 'BSD'
-install_requires = []
+install_requires = ['geopy==0.94.2','python-geohash==0.8.4']
 
 
 def get_version(package):

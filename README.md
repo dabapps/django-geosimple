@@ -1,6 +1,7 @@
 Basic geospatial helpers for Django
 ===================================
 
+
 GeoDjango is an incredibly powerful set of extensions to Django for handling complex geospatial data. However, it has a long list of prerequisites (a spatial database such as PostgreSQL with PostGIS, GEOS, a specialised database backend, etc). For many projects that have only basic geospatial requirements, the overhead of getting GeoDjango up and running is painful.
 
 *Note: if you are building an application with complex or high-performance geospatial requirements, please consider using GeoDjango.*
@@ -12,6 +13,8 @@ django-geosimple provides the following:
 * a set of methods for filtering and sorting query results *in memory*, which are (obviously) only suitable for relatively small sets of locations.
 
 It works on any database backend supported by Django with no modifications. It is based on the `geopy` and `python-geohash` libraries.
+
+*This is an experimental project - any use is at your own risk!
 
 Background
 ----------
