@@ -25,7 +25,7 @@ Conceptually, the sorts of geospatial calculations that *most* web applications 
 
 The `geopy` library provides an easy, fast method for calculating the distance between two points. If we calculate this distance for every point in our database, we can easily sort them and discard any that fall outside a given radius.
 
-Although computers are fast (my laptop can calculate and sort the above distances for 20,000 points in less than a second), this approach clearly doesn't scale very well. It uses lots of memory, and with a large-ish number of points the calculations take too much time to be performed in a web request/response cycle.
+Although computers are fast (my laptop can calculate and sort distances for 20,000 points in less than a second), this approach clearly doesn't scale very well. It uses lots of memory, and with a large-ish number of points the calculations take too much time to be performed in a web request/response cycle.
 
 [Geohash](https://en.wikipedia.org/wiki/Geohash) is a fairly well-established way of representing geographical locations as human-readable strings that have a desirable property: they get *gradually less accurate* as you discard characters from the end of the code. It's also easy to calculate the neighbours of a given geohash.
 
@@ -34,7 +34,7 @@ By storing our geographical points as geohashes, we can "jump start" the sorting
 GeohashField
 ------------
 
-A `GeohashField` provides a simple way to store a location as a Geohash. Interally, the location is stored as a 12-character `CharField`. The value of the field can be set in a few ways:
+A `GeohashField` provides a simple way to store a location as a Geohash. Internally, the location is stored as a 12-character `CharField`. The value of the field can be set in a few ways:
 
 * Directly as a string, if you already know the geohash
 * As a (latitude, longitude) two-tuple
@@ -88,7 +88,7 @@ You can perform a fairly crude filter of your locations by searching nearby geoh
 ```pycon
 >>> dabapps_office = (50.8229, -0.143219)
 >>> distance = 0.5  # kilometres
->>> Coffeeshop.objects.filter(location__approx_distance_lt=(dabapps_office, distance))
+>>> CoffeeShop.objects.filter(location__approx_distance_lt=(dabapps_office, distance))
 ```
 
 The value is a two-tuple of a location and a distance. The location can be specified in any of the ways supported by field assignment above (two-tuple, dictionary, object, etc). The distance can either be a number in kilometers, or a `geopy.distance.Distance` instance (aliased to `geosimple.Distance` for convenience), which can be used to represent all manner of other distance measurements.
@@ -100,7 +100,7 @@ This works by creating a set of nine geohashes that cover the area described by 
 After a crude filter has been performed, `django-geosimple` can post-process your query results to discard any that don't fit with in the radius you requested. This is done *in-memory*, so is only sensible to use with relatively small sets of results. The crude geohash search described above is performed to chop down your result set to a sensible size first.
 
 ```pycon
->>> Coffeeshop.objects.filter(location__distance_lt=(dabapps_office, distance))
+>>> CoffeeShop.objects.filter(location__distance_lt=(dabapps_office, distance))
 ```
 
 You don't need to use both `__approx_distance_lt` and `__distance_lt`: using the latter implies the former.
@@ -110,13 +110,13 @@ You don't need to use both `__approx_distance_lt` and `__distance_lt`: using the
 You can order a set of results by distance from a point. Again, this is done *in-memory* when the queryset is iterated, so don't try to use it for large result sets.
 
 ```pycon
->>> Coffeeshop.objects.order_by_distance_from(dabapps_office)
+>>> CoffeeShop.objects.order_by_distance_from(dabapps_office)
 ```
 
 If you've already filtered the points by distance, you don't need to supply the location again:
 
 ```
->>> Coffeeshop.objects.filter(location__distance_lt=(dabapps_office, Distance(miles=1))).order_by_distance()
+>>> CoffeeShop.objects.filter(location__distance_lt=(dabapps_office, Distance(miles=1))).order_by_distance()
 ```
 
 ### Distance annotation
