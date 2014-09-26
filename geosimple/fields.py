@@ -17,3 +17,10 @@ class GeohashField(models.CharField):
         if isinstance(value, basestring):
             return Geohash(value)
         return convert_to_point(value).geohash
+
+
+try:
+    from south.modelsinspector import add_introspection_rules
+    add_introspection_rules([], ["^geosimple\.fields\.GeohashField"])
+except:
+    pass
