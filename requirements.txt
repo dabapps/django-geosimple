@@ -2,3 +2,4 @@ Django==1.8
 geopy==1.11.0
 python-geohash==0.8.5
 flake8==2.5.1
+coverage==4.0.3
