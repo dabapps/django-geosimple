@@ -18,4 +18,4 @@ install:
   - pip install -q Django==$DJANGO_VERSION --use-mirrors
   - pip install -q -r requirements.txt --use-mirrors
 
-script: python manage.py test
+script: python runtests.py
