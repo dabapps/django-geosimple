@@ -97,11 +97,7 @@ class GeoQuerySet(models.query.QuerySet):
 class GeoManager(models.Manager):
 
     def get_query_set(self):
-        # Django 1.5
-        # https://docs.djangoproject.com/en/1.5/topics/db/managers/#modifying-initial-manager-querysets
         return GeoQuerySet(self.model)
 
     def get_queryset(self):
-        # Django 1.6
-        # https://docs.djangoproject.com/en/1.6/topics/db/managers/#modifying-initial-manager-querysets
-        return GeoQuerySet(self.model)
+        return self.get_query_set()
