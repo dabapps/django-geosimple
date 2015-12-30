@@ -15,7 +15,7 @@ env:
   - DJANGO_VERSION=1.8
 
 install:
-  - pip install -q Django==$DJANGO_VERSION --use-mirrors
-  - pip install -q -r requirements.txt --use-mirrors
+  - pip install -r requirements.txt
+  - pip install -U Django==$DJANGO_VERSION
 
 script: python runtests.py
