@@ -21,13 +21,17 @@ def flake8_main(args):
     return command
 
 
-def run_tests_coverage(args):
-    print 'Running: coverage %s' % " ".join(str(x) for x in args)
+def run_tests(args):
     command = subprocess.call(['coverage', 'run'] + args)
-    logger.info('Success. Coverage generated.') if command else None
+    return command
+
+
+def run_coverage():
     command = subprocess.call(['coverage', 'report'])
+    logger.info('Success. Coverage generated.') if command else None
     return command
 
 
 exit_on_failure(flake8_main(FLAKE8_ARGS))
-exit_on_failure(run_tests_coverage(COVERAGE_ARGS))
+exit_on_failure(run_tests(COVERAGE_ARGS))
+exit_on_failure(run_coverage())
