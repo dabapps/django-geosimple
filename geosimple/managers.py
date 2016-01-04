@@ -98,3 +98,6 @@ class GeoManager(models.Manager):
 
     def get_query_set(self):
         return GeoQuerySet(self.model)
+
+    def get_queryset(self):
+        return self.get_query_set()

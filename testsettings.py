@@ -8,3 +8,5 @@ DATABASES = {
 INSTALLED_APPS = (
     'geosimple.tests',
 )
+
+SECRET_KEY = "django_geosimple"

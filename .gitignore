@@ -4,3 +4,6 @@ dist/
 build/
 *.egg-info/
 /env/
+htmlcov/
+
+.coverage
