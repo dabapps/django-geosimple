@@ -1,5 +1,11 @@
-Basic geospatial helpers for Django
+django-geosimple [![travis][travis-image]][travis-url] [![pypi][pypi-image]][pypi-url]
 ===================================
+> Basic geospatial helpers for Django
+
+### Supports
+
+ - Python 2.6, 2.7
+ - Django 1.3 up to 1.8
 
 
 GeoDjango is an incredibly powerful set of extensions to Django for handling complex geospatial data. However, it has a long list of prerequisites (a spatial database such as PostgreSQL with PostGIS, GEOS, a specialised database backend, etc). For many projects that have only basic geospatial requirements, the overhead of getting GeoDjango up and running is painful.
@@ -122,3 +128,10 @@ If you've already filtered the points by distance, you don't need to supply the 
 ### Distance annotation
 
 If either of the in-memory filtering or sorting methods are used, each item in the queryset will be annotated with the distance from the given point. The property used is the name of the field with `_distance` appended. So, in the example above, the property will be named `location_distance`. This will be a `geopy.Distance` instance. You can force these annotations to be added by calling `with_distance_annotations`, passing a location.
+
+
+[travis-image]: https://travis-ci.org/dabapps/django-geosimple.svg?branch=master
+[travis-url]: https://travis-ci.org/dabapps/django-geosimple
+
+[pypi-image]: https://badge.fury.io/py/django-geosimple.svg
+[pypi-url]: https://pypi.python.org/pypi/django-geosimple/
