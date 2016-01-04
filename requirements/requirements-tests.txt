@@ -1,4 +1,0 @@
-geopy==0.94.2
-python-geohash==0.8.5
-flake8==2.5.1
-coverage==4.0.3
