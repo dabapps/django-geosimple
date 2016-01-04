@@ -2,20 +2,20 @@ language: python
 
 sudo: false
 
-python:
-  - "2.6"
-  - "2.7"
-
 env:
-  - DJANGO_VERSION=1.3
-  - DJANGO_VERSION=1.4
-  - DJANGO_VERSION=1.5
-  - DJANGO_VERSION=1.6
-  - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then DJANGO_VERSION=1.7; fi
-  - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then DJANGO_VERSION=1.8; fi
+    - TOX_ENV=py26-django13
+    - TOX_ENV=py26-django14
+    - TOX_ENV=py26-django15
+    - TOX_ENV=py26-django16
+    - TOX_ENV=py27-django13
+    - TOX_ENV=py27-django14
+    - TOX_ENV=py27-django15
+    - TOX_ENV=py27-django16
+    - TOX_ENV=py27-django17
+    - TOX_ENV=py27-django18
 
 install:
-  - pip install -r requirements.txt
-  - pip install -U Django==$DJANGO_VERSION
+  - pip install tox
 
-script: python runtests.py
+script:
+  - tox -e $TOX_ENV
