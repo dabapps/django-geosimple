@@ -15,7 +15,7 @@ def exit_on_failure(command, message=None):
 
 
 def flake8_main(args):
-    print 'Running: flake8 %s' % " ".join(str(x) for x in args)
+    print('Running: flake8 %s' % " ".join(str(x) for x in args))
     command = subprocess.call(['flake8'] + args)
     logger.info('Success. flake8 passed.') if command else None
     return command

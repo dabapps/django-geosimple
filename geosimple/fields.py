@@ -1,5 +1,6 @@
 from django.db import models
 from geosimple.utils import Geohash, convert_to_point
+import six
 
 
 class GeohashField(models.CharField):
@@ -14,7 +15,7 @@ class GeohashField(models.CharField):
     def to_python(self, value):
         if not value:
             return None
-        if isinstance(value, basestring):
+        if isinstance(value, six.string_types):
             return Geohash(value)
         return convert_to_point(value).geohash
 
