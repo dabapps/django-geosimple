@@ -5,12 +5,13 @@ import six
 
 class GeohashField(models.CharField):
 
-    __metaclass__ = models.SubfieldBase
-
     def __init__(self, *args, **kwargs):
         kwargs['max_length'] = 12
         kwargs['db_index'] = True
         return super(GeohashField, self).__init__(*args, **kwargs)
+
+    def from_db_value(self, value, expression, connection, context):
+        return self.to_python(value)
 
     def to_python(self, value):
         if not value:
