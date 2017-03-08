@@ -1,9 +1,12 @@
 from django.db import models
+from django import VERSION as DJANGO_VERSION
 from geosimple.utils import Geohash, convert_to_point
 import six
 
 
 class GeohashField(models.CharField):
+
+    __metaclass__ = type if DJANGO_VERSION >= (1, 8) else models.SubfieldBase
 
     def __init__(self, *args, **kwargs):
         kwargs['max_length'] = 12
