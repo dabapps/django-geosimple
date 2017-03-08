@@ -74,11 +74,11 @@ class GeoQuerySet(models.query.QuerySet):
             result_location = getattr(result, field_name)
             distance_from_location = result_location.point.distance_from(convert_to_point(location))
             setattr(result, distance_property_name, distance_from_location)
-            if distance_from_location < radius:
+            if distance_from_location.km < radius.km:
                 results.append(result)
 
         if self._postprocess.get('sort'):
-            return iter(sorted(results, key=lambda item: getattr(item, distance_property_name)))
+            return iter(sorted(results, key=lambda item: getattr(item, distance_property_name).km))
         return iter(results)
 
     def count(self):
