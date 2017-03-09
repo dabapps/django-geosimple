@@ -5,17 +5,16 @@ python: 3.5
 sudo: false
 
 env:
-  - TOX_ENV=py26-django15
-  - TOX_ENV=py26-django16
-  - TOX_ENV=py27-django15
   - TOX_ENV=py27-django16
   - TOX_ENV=py27-django17
   - TOX_ENV=py27-django18
   - TOX_ENV=py27-django19
   - TOX_ENV=py27-django110
   - TOX_ENV=py34-django18
+  - TOX_ENV=py34-django19
   - TOX_ENV=py34-django110
   - TOX_ENV=py35-django18
+  - TOX_ENV=py35-django19
   - TOX_ENV=py35-django110
 
 install:
