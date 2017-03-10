@@ -86,6 +86,13 @@ class GeohashFieldTestCase(TestCase):
         shop = self.get_shop()
         self.assertEqual(shop.location, GEOHASH)
 
+    def test_queryset_cloning(self):
+        self.shop.location = GEOHASH
+        self.shop.save()
+
+        shop = CoffeeShop.objects.all().values('location').distinct().first()
+        self.assertEqual(shop['location'], GEOHASH)
+
     def test_type_conversion_to_database(self):
         self.shop.location = (LAT, LON)
         self.shop.save()
@@ -139,7 +146,9 @@ class GeoManagerTestCase(TestCase):
     def test_in_memory_sort(self):
         redwood = CoffeeShop.objects.create(name='Redwood', location='gcpchuuwvg7xx')
 
-        results = CoffeeShop.objects.filter(location__distance_lt=(self.dabapps_office, 100)).order_by_distance()
+        results = CoffeeShop.objects.filter(
+            location__distance_lt=(self.dabapps_office, 100)
+        ).order_by_distance()
         self.assertEqual(results.count(), 3)
         self.assertEqual(results[0], self.marwood)
         self.assertEqual(results[1], redwood)
