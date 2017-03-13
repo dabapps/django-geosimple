@@ -14,8 +14,8 @@ class GeoQuerySet(models.query.QuerySet):
         super(GeoQuerySet, self).__init__(*args, **kwargs)
         self._postprocess = {}
 
-    def _clone(self, **kwargs):
-        c = super(GeoQuerySet, self)._clone(**kwargs)
+    def _clone(self, *args, **kwargs):
+        c = super(GeoQuerySet, self)._clone(*args, **kwargs)
         c._postprocess = copy(self._postprocess)
         return c
 
