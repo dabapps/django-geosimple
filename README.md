@@ -135,3 +135,7 @@ If either of the in-memory filtering or sorting methods are used, each item in t
 
 [pypi-image]: https://badge.fury.io/py/django-geosimple.svg
 [pypi-url]: https://pypi.python.org/pypi/django-geosimple/
+
+## Code of conduct
+
+For guidelines regarding the code of conduct when contributing to this repository please review [https://www.dabapps.com/open-source/code-of-conduct/](https://www.dabapps.com/open-source/code-of-conduct/)
